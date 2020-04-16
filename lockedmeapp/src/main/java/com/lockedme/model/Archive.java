@@ -8,18 +8,21 @@ package com.lockedme.model;
 public class Archive {
 
 	private String name;
-	private String location;
+	private String directory;
+	private String root;
+	private String extension;
 
 	public Archive() {
 		super();
 
 	}
 
-	
-	public Archive(String name, String location) {
+	public Archive(String name, String directory, String root, String extension) {
 		super();
 		this.name = name;
-		this.location = location;
+		this.directory = directory;
+		this.root = root;
+		this.extension = extension;
 	}
 
 	public String getName() {
@@ -30,17 +33,33 @@ public class Archive {
 		this.name = name;
 	}
 
-	public String getLocation() {
-		return location;
+	public String getDirectory() {
+		return directory;
 	}
 
-	public void setLocation(String location) {
-		this.location = location;
+	public void setDirectory(String directory) {
+		this.directory = directory;
+	}
+
+	public String getRoot() {
+		return root;
+	}
+
+	public void setRoot(String root) {
+		this.root = root;
+	}
+
+	public String getExtension() {
+		return extension;
+	}
+
+	public void setExtension(String extension) {
+		this.extension = extension;
 	}
 
 	@Override
 	public String toString() {
-		return "File [name=" + name + ", location=" + location + "]";
+		return "File [name=" + name + ", directory=" + directory + "]";
 	}
 
 }
