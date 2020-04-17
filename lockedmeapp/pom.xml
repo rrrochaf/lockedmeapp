@@ -5,4 +5,10 @@
   <version>0.0.1-SNAPSHOT</version>
   <name>lockedmeapp</name>
   <description>Lockedme.com prototype application for Company Lockers Pvt. Ltd</description>
+  
+  <properties>
+		<maven.compiler.souce>1.8</maven.compiler.souce>
+		<maven.compiler.target>1.8</maven.compiler.target>
+
+	</properties>
 </project>
