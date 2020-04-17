@@ -52,17 +52,24 @@ public class LockedMeApp {
 
 		FileBO file = new FileBoImpl();
 
-		int ch = 0;
+		int key;
 
 		do {
+			key = 0;
 
-			System.out.println("1) File names in ascending order");
-			System.out.println("2) Files Manipulation");
-			System.out.println("3) Close Application");
+			try {
 
-			ch = Integer.parseInt(getScanner().nextLine());
+				System.out.println("1) File names in ascending order");
+				System.out.println("2) Files Manipulation");
+				System.out.println("3) Close Application");
 
-			switch (ch) {
+				key = Integer.parseInt(getScanner().nextLine());
+
+			} catch (NumberFormatException e) {
+				System.out.println("Choose a valid option!");
+			}
+
+			switch (key) {
 			case 1:
 
 				try {
@@ -91,24 +98,32 @@ public class LockedMeApp {
 				break;
 			}
 
-		} while (ch != 3);
+		} while (key != 3);
 
 	}
 
 	private static void manipulatingFiles() {
 
-		int ch = 0;
+		int key;
 
 		do {
 
-			System.out.println("1) Add a file to the existing directory list");
-			System.out.println("2) Delete a file from the existing directory list");
-			System.out.println("3) Search a file from the main directory");
-			System.out.println("4) Back to the main context");
+			key = 0;
 
-			ch = Integer.parseInt(getScanner().nextLine());
+			try {
 
-			switch (ch) {
+				System.out.println("1) Add a file to the existing directory list");
+				System.out.println("2) Delete a file from the existing directory list");
+				System.out.println("3) Search a file from the main directory");
+				System.out.println("4) Back to the main context");
+
+				key = Integer.parseInt(getScanner().nextLine());
+
+			} catch (NumberFormatException e) {
+				System.out.println("Choose a valid option!!!");
+			}
+
+			switch (key) {
 
 			case 1:
 				addFile();
@@ -133,7 +148,7 @@ public class LockedMeApp {
 
 			}
 
-		} while (ch != 4);
+		} while (key != 4);
 
 	}
 
@@ -144,23 +159,40 @@ public class LockedMeApp {
 
 		System.out.println("Root directories in your system are:");
 		listRoot(fileBO, archive);
-		
 
-		int key = 0;
+		int key;
+		do {
 
-		System.out.println("1) Add a file in the root");
-		System.out.println("2) Add a file in another directory");
-		key = Integer.parseInt(getScanner().nextLine());
+			key = 0;
+			System.out.println("");
+			System.out.println("1) Add a file in the root");
+			System.out.println("2) Add a file in another directory");
+			System.out.println("3) Back to the main context");
+			System.out.println("");
 
-		if (key == 1) {
+			try {
 
-			addFileInRoot(fileBO, archive);
+				key = Integer.parseInt(getScanner().nextLine());
 
-		} else {
+			} catch (NumberFormatException e) {
+				System.out.println("Choose a valid option!");
+			}
 
-			addFileinDirectory(fileBO, archive);
-		}
-
+			switch (key) {
+			case 1:
+				addFileInRoot(fileBO, archive);
+				break;
+			case 2:
+				addFileinDirectory(fileBO, archive);
+				break;
+			case 3:
+				mainMenu();
+				break;
+			default:
+				System.out.println("Entered choice is invalid");
+				break;
+			}
+		} while (key != 3);
 	}
 
 	private static void addFileinDirectory(FileBO fileBO, Archive archive) {
@@ -171,7 +203,7 @@ public class LockedMeApp {
 				System.out.println(directoryList[i].toString());
 			}
 		} catch (IOException e) {
-			e.getMessage();
+			System.out.println(e.getMessage());
 		}
 
 		System.out.println("");
@@ -224,21 +256,41 @@ public class LockedMeApp {
 		System.out.println("Root directories in your system are:");
 		listRoot(fileBO, archive);
 
-		int key = 0;
+		int key;
 
-		System.out.println("1) Delete a file in the root");
-		System.out.println("2) Delete a file in another directory");
-		key = Integer.parseInt(getScanner().nextLine());
+		do {
+			key = 0;
 
-		if (key == 1) {
+			System.out.println("");
+			System.out.println("1) Delete a file in the root");
+			System.out.println("2) Delete a file in another directory");
+			System.out.println("3) Back to the main context");
+			System.out.println("");
 
-			deleteFileInRoot(fileBO, archive);
+			try {
 
-		} else {
+				key = Integer.parseInt(getScanner().nextLine());
 
-			deleteFileInDirectory(fileBO, archive);
-		}
+			} catch (NumberFormatException e) {
+				System.out.println("Choose a valid option!");
+			}
 
+			switch (key) {
+			case 1:
+				deleteFileInRoot(fileBO, archive);
+				break;
+			case 2:
+				deleteFileInDirectory(fileBO, archive);
+				break;
+			case 3:
+				mainMenu();
+				break;
+
+			default:
+				System.out.println("Entered choice is invalid!");
+				break;
+			}
+		} while (key != 3);
 	}
 
 	private static void deleteFileInRoot(FileBO fileBO, Archive archive) {
@@ -286,7 +338,7 @@ public class LockedMeApp {
 			System.out.println("Type the name of the file that you want to delete");
 			archive.setName(getScanner().nextLine());
 
-			System.out.println("Type the file extension");
+			System.out.println("Type the file extension of the file");
 			archive.setExtension(getScanner().nextLine());
 
 			if (fileBO.deleteFile(archive, false)) {
@@ -304,11 +356,65 @@ public class LockedMeApp {
 	}
 
 	private static void searchFile() {
+		FileBO fileBO = new FileBoImpl();
+		Archive archive = new Archive();
+
+		System.out.println("Root directories in your system are:");
+		listRoot(fileBO, archive);
+
+		int key;
+		do {
+
+			key = 0;
+			System.out.println("");
+			System.out.println("1) Search a file from the main directory ");
+			System.out.println("2) Back to the main context");
+			System.out.println("");
+
+			try {
+
+				key = Integer.parseInt(getScanner().nextLine());
+
+			} catch (NumberFormatException e) {
+				System.out.println("Choose a valid option!");
+			}
+
+			switch (key) {
+			case 1:
+				System.out.println("Type the name of the file");
+				archive.setName(getScanner().nextLine());
+
+				try {
+
+					File[] searchFile = fileBO.searchFile(archive, true);
+
+					if (searchFile.length == 0) {
+						System.out.println("File not found");
+					} else {
+						for (int i = 0; i < searchFile.length; i++) {
+							System.out.println(searchFile[i].toString());
+						}
+					}
+
+				} catch (BussinessException e) {
+					System.out.println(e.getMessage());
+				} catch (IOException e) {
+					System.out.println(e.getMessage());
+				}
+				break;
+			case 2:
+				mainMenu();
+				break;
+			default:
+				System.out.println("Entered choice is invalid");
+				break;
+			}
+		} while (key != 3);
 
 	}
 
 	private static void listRoot(FileBO fileBO, Archive archive) {
-		
+
 		try {
 			File[] rootList = fileBO.getRootList();
 			for (int i = 0; i < rootList.length; i++) {
@@ -316,12 +422,18 @@ public class LockedMeApp {
 			}
 		} catch (IOException e) {
 
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 		}
 
 		System.out.println("Type the root of the file");
 		archive.setRoot(getScanner().nextLine());
 
+		try {
+			fileBO.validateRoot(archive);
+		} catch (BussinessException e) {
+			System.out.println(e.getMessage());
+			listRoot(fileBO, archive);
+		}
 	}
 
 	private static Scanner getScanner() {

@@ -2,6 +2,7 @@ package com.lockedme.bo.impl;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -17,6 +18,7 @@ import com.lockedme.model.Archive;
  *
  */
 public class FileBoImpl implements FileBO {
+
 
 	public List<String> getFileNamesAsc() throws BussinessException {
 
@@ -43,6 +45,7 @@ public class FileBoImpl implements FileBO {
 		return listAllFiles;
 	}
 
+	
 	public boolean addFile(Archive archive, boolean isRoot) throws IOException, BussinessException {
 
 		String path;
@@ -50,10 +53,10 @@ public class FileBoImpl implements FileBO {
 		validateArchive(archive, isRoot);
 
 		if (isRoot == false) {
-			path = archive.getRoot() + "//" + archive.getDirectory() + "//" + archive.getName() + "."
+			path = archive.getRoot().charAt(0) + "://" + archive.getDirectory() + "//" + archive.getName() + "."
 					+ archive.getExtension();
 		} else {
-			path = archive.getRoot() + "//" + archive.getName() + "." + archive.getExtension();
+			path = archive.getRoot().charAt(0) + "://" + archive.getName() + "." + archive.getExtension();
 		}
 
 		File file = new File(path);
@@ -73,7 +76,7 @@ public class FileBoImpl implements FileBO {
 		validateArchive(archive, isRoot);
 
 		if (isRoot == false) {
-			path = archive.getRoot() + "://" + archive.getDirectory() + "//" + archive.getName() + "."
+			path = archive.getRoot().charAt(0) + "://" + archive.getDirectory() + "//" + archive.getName() + "."
 					+ archive.getExtension();
 		} else {
 			path = archive.getRoot() + "//" + archive.getName() + "." + archive.getExtension();
@@ -84,25 +87,28 @@ public class FileBoImpl implements FileBO {
 		if (file.delete()) {
 			return true;
 		} else {
-			throw new IOException();
+			throw new IOException("File not found");
 		}
 
 	}
 
-	public void searchFile(Archive archive) throws BussinessException {
 
-	}
 
 	public void validateArchive(Archive archive, boolean isRoot) throws BussinessException {
 		if (archive == null) {
 			throw new BussinessException("The path of the file cannot be empty");
-		} else if (archive.getRoot() == null || archive.getRoot().isBlank()) {
+		}
+
+		if (archive.getRoot() == null || archive.getRoot().isBlank()) {
 			throw new BussinessException("The root of the file cannot be empty");
-		} else if (isRoot == false) {
+		}
+		if (isRoot == false) {
 			if (archive.getDirectory() == null || archive.getDirectory().isBlank())
 				throw new BussinessException("The directory of the file cannot be empty");
-		} else if (archive.getName().isBlank()) {
-			throw new BussinessException("The extension of the file cannot be empty");
+		}
+
+		if (archive.getName().isBlank()) {
+			throw new BussinessException("The name of the file cannot be empty");
 		}
 	}
 
@@ -128,7 +134,13 @@ public class FileBoImpl implements FileBO {
 
 	public File[] getFilesInDirectoryList(Archive archive) throws IOException {
 
-		File file = new File(archive.getRoot() + "://"+archive.getDirectory());
+		validateRoot(archive);
+
+		File file = new File(archive.getRoot().charAt(0) + "://");
+
+		if (archive.getRoot() != null && archive.getDirectory() != null) {
+			file = new File(archive.getRoot().charAt(0) + "://" + archive.getDirectory());
+		}
 
 		FileFilter filter = new FileFilter() {
 
@@ -139,5 +151,49 @@ public class FileBoImpl implements FileBO {
 
 		return file.listFiles(filter);
 
+	}
+
+	public void validateRoot(Archive archive) throws BussinessException {
+
+		if (archive.getRoot() == null) {
+			throw new BussinessException("Root cannot be empty!!!");
+		}
+
+		boolean isRootInvalid = true;
+
+		File[] listRoots = File.listRoots();
+		for (int i = 0; i < listRoots.length; i++) {
+			if (listRoots[i].toString().equals(archive.getRoot())) {
+				isRootInvalid = false;
+			}
+		}
+
+		if (isRootInvalid) {
+			throw new BussinessException("Root is invalid! Type as it is shown");
+		}
+
+	}
+
+	public File[] searchFile(Archive archive, boolean isRoot) throws IOException, BussinessException {
+		
+		validateRoot(archive);
+		
+		final String search = archive.getName();
+
+		File file = new File(archive.getRoot().charAt(0) + "://");
+
+		if (archive.getRoot() != null && archive.getDirectory() != null) {
+			file = new File(archive.getRoot().charAt(0) + "://" + archive.getDirectory());
+		}
+
+		FilenameFilter filter = new FilenameFilter() {
+			
+			public boolean accept(File dir, String name) {
+				return name.startsWith(search);
+			}
+		};
+		
+		return file.listFiles(filter);
+		
 	}
 }

@@ -19,9 +19,9 @@ public interface FileBO {
 	public boolean addFile(Archive archive, boolean isRoot) throws IOException, BussinessException;
 	
 	public boolean deleteFile(Archive archive, boolean isRoot) throws IOException, BussinessException;
-
-	public void searchFile(Archive archive) throws BussinessException;
 	
+	public File[] searchFile(Archive archive,boolean isRoot) throws IOException, BussinessException;
+
 	public File[] getRootList() throws IOException;
 	
 	public File[] getDirectoryList() throws IOException;
@@ -29,5 +29,7 @@ public interface FileBO {
 	public File[] getFilesInDirectoryList(Archive archive) throws IOException;
 	
 	public void validateArchive(Archive archive, boolean isRoot) throws BussinessException;
+	
+	public void validateRoot(Archive archive) throws BussinessException;
 
 }
