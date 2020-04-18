@@ -73,13 +73,19 @@ public class LockedMeApp {
 			case 1:
 
 				try {
-					List<String> fileNamesAsc = file.getFileNamesAsc();
+					File[] rootList;
+
+					rootList = file.getRootList();
+
+					List<String> fileNamesAsc = file.getFileNamesAsc(rootList[0].toString());
 
 					for (String files : fileNamesAsc) {
 						System.out.println(files);
 					}
 				} catch (BussinessException e) {
-					e.printStackTrace();
+					System.out.println(e.getMessage());
+				} catch (IOException e) {
+					System.out.println(e.getMessage());
 				}
 
 				break;
@@ -198,7 +204,7 @@ public class LockedMeApp {
 	private static void addFileinDirectory(FileBO fileBO, Archive archive) {
 
 		try {
-			File[] directoryList = fileBO.getDirectoryList();
+			File[] directoryList = fileBO.getDirectoryList(archive);
 			for (int i = 0; i < directoryList.length; i++) {
 				System.out.println(directoryList[i].toString());
 			}
@@ -321,7 +327,8 @@ public class LockedMeApp {
 	private static void deleteFileInDirectory(FileBO fileBO, Archive archive) {
 
 		try {
-			File[] directoryList = fileBO.getDirectoryList();
+
+			File[] directoryList = fileBO.getDirectoryList(archive);
 			for (int i = 0; i < directoryList.length; i++) {
 				System.out.println(directoryList[i].toString());
 			}

@@ -19,10 +19,9 @@ import com.lockedme.model.Archive;
  */
 public class FileBoImpl implements FileBO {
 
+	public List<String> getFileNamesAsc(String rootPath) throws BussinessException {
 
-	public List<String> getFileNamesAsc() throws BussinessException {
-
-		File rootDirectory = new File("C://");
+		File rootDirectory = new File(rootPath.charAt(0) + "://");
 
 		FileFilter filter = new FileFilter() {
 
@@ -45,7 +44,6 @@ public class FileBoImpl implements FileBO {
 		return listAllFiles;
 	}
 
-	
 	public boolean addFile(Archive archive, boolean isRoot) throws IOException, BussinessException {
 
 		String path;
@@ -92,8 +90,6 @@ public class FileBoImpl implements FileBO {
 
 	}
 
-
-
 	public void validateArchive(Archive archive, boolean isRoot) throws BussinessException {
 		if (archive == null) {
 			throw new BussinessException("The path of the file cannot be empty");
@@ -117,9 +113,9 @@ public class FileBoImpl implements FileBO {
 
 	}
 
-	public File[] getDirectoryList() throws IOException {
+	public File[] getDirectoryList(Archive archive) throws IOException {
 
-		File file = new File("C://");
+		File file = new File(archive.getRoot().charAt(0) + "://");
 
 		FileFilter filter = new FileFilter() {
 
@@ -175,9 +171,9 @@ public class FileBoImpl implements FileBO {
 	}
 
 	public File[] searchFile(Archive archive, boolean isRoot) throws IOException, BussinessException {
-		
+
 		validateRoot(archive);
-		
+
 		final String search = archive.getName();
 
 		File file = new File(archive.getRoot().charAt(0) + "://");
@@ -187,13 +183,13 @@ public class FileBoImpl implements FileBO {
 		}
 
 		FilenameFilter filter = new FilenameFilter() {
-			
+
 			public boolean accept(File dir, String name) {
 				return name.startsWith(search);
 			}
 		};
-		
+
 		return file.listFiles(filter);
-		
+
 	}
 }

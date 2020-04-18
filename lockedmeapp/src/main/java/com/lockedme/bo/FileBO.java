@@ -14,7 +14,7 @@ import com.lockedme.model.Archive;
  */
 public interface FileBO {
 
-	public List<String> getFileNamesAsc() throws BussinessException;
+	public List<String> getFileNamesAsc(String rootPath) throws BussinessException;
 
 	public boolean addFile(Archive archive, boolean isRoot) throws IOException, BussinessException;
 	
@@ -24,7 +24,7 @@ public interface FileBO {
 
 	public File[] getRootList() throws IOException;
 	
-	public File[] getDirectoryList() throws IOException;
+	public File[] getDirectoryList(Archive archive) throws IOException;
 	
 	public File[] getFilesInDirectoryList(Archive archive) throws IOException;
 	
