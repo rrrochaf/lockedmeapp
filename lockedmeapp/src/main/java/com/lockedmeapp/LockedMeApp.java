@@ -45,6 +45,8 @@ public class LockedMeApp {
 		System.out.println("Third option - Close Application ");
 		System.out.println();
 		System.out.println("********* Press enter to continue *********");
+		System.out.println("********* Press enter to continue *********");
+		System.out.println("********* Press enter to continue *********");
 		getScanner().nextLine();
 	}
 
